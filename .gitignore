@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.pkl
+
+# Environment
+.env
+venv/
+micromamba_env/
+
+# Environment
+.env
+venv/
+micromamba_env/
