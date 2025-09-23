@@ -1,9 +1,9 @@
-# import pandas as pd
-# import numpy as npls
-# import matplotlib.pyplot as plt
-# import sklearn
-# from sklearn.model_selection import train_test_split
-# from sklearn.ensemble import RandomForestClassifier
+import pandas as pd
+import numpy as npls
+import matplotlib.pyplot as plt
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
 
 # print(pd.__version__)
 # print(np.__version__)

@@ -1,0 +1,1 @@
+First ML project exploring the sk-learn packaged. Aim of project is to test different models perfomance on predicting smoker vs non smoker from the file heart_disease_health_indicators file.
