@@ -5,6 +5,10 @@ import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_classification
+from sklearn.pipeline import Pipeline
 
 # print(f"Pandas - {pd.__version__}, NumPy - {np.__version__}, Sklearn - {sklearn.__version__}")
 
@@ -46,7 +50,11 @@ def main():
     evaluate_model(clf, X_val, y_val)
 
 
-
 if __name__ == "__main__":
     main()
 
+
+    
+    # clf = train_model(X_train_new, y_train_new)
+    
+    # evaluate_model(clf, X_val, y_val)
