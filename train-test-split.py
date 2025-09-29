@@ -13,10 +13,10 @@ from sklearn.ensemble import RandomForestClassifier
 heart_raw = pd.read_csv('heart_disease_health_indicators_BRFSS2015.csv')
 # print(heart_raw.head())
 
-X = heart_raw.drop("HeartDiseaseorAttack", axis=1)
+X = heart_raw.drop("Smoker", axis=1)
 
 # Create y (the target column)
-y = heart_raw["HeartDiseaseorAttack"]
+y = heart_raw["Smoker"]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42, stratify=y

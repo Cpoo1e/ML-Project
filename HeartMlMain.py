@@ -28,8 +28,8 @@ def train_model(X_train, y_train):
     # clf.fit(X_train, y_train)
     # return clf
 
-    continuous_features = ['BMI', 'Age', 'MentHlth', 'PhysHlth', 'GenHlth', 'Diabetes', 'Education', 'Income']
-    categorical_features = [col for col in X_train.columns if col not in continuous_features + ['HeartDiseaseorAttack']]
+    continuous_features = ['BMI', 'Age', 'MentHlth', 'PhysHlth', 'GenHlth', 'Education', 'Income']
+    categorical_features = [col for col in X_train.columns if col not in continuous_features + ['Smoker']]
 
     prepro = ColumnTransformer(
         transformers=[
@@ -42,10 +42,10 @@ def train_model(X_train, y_train):
         ('classifier', LogisticRegression(class_weight='balanced', random_state=42))
     ])
 
-    clf.fit(X_train, y_train)
+    clf = clf.fit(X_train, y_train)
     return clf
     
-# evaluating the model on the validation set andplotting the ROC curve
+# evaluating the model on the validation set and plotting the ROC curve
 def evaluate_model(clf, X_val, y_val):
     val_acc = clf.score(X=X_val, y=y_val)
     print(f"The model's accuracy on the test set is: {val_acc*100}%")
@@ -64,8 +64,8 @@ def evaluate_model(clf, X_val, y_val):
    
 
 def main():
-    X_train, y_train = import_data("X_train.csv", "y_train.csv")
-    
+    X_train, y_train = import_data("X_train.csv", "y_train.csv")  
+
     X_train_new, X_val, y_train_new, y_val = train_test_split(
         X_train, y_train, test_size=0.25, random_state=42, stratify=y_train
     )
