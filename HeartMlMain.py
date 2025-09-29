@@ -13,6 +13,10 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import make_classification
 from sklearn.pipeline import Pipeline
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import classification_report
+from lightgbm import LGBMClassifier
+from xgboost import XGBClassifier
 
 # print(f"Pandas - {pd.__version__}, NumPy - {np.__version__}, Sklearn - {sklearn.__version__}")
 
@@ -28,7 +32,7 @@ def train_model(X_train, y_train):
     # clf.fit(X_train, y_train)
     # return clf
 
-    continuous_features = ['BMI', 'Age', 'MentHlth', 'PhysHlth', 'GenHlth', 'Education', 'Income']
+    continuous_features = ['BMI', 'Age', 'MentHlth', 'PhysHlth', 'GenHlth', 'Income']
     categorical_features = [col for col in X_train.columns if col not in continuous_features + ['Smoker']]
 
     prepro = ColumnTransformer(
@@ -37,18 +41,40 @@ def train_model(X_train, y_train):
             ('cat', 'passthrough', categorical_features)    
         ])
 
+    # clf = Pipeline(steps=[
+    #     ('preprocessor', prepro),
+    #     ('classifier', LGBMClassifier(
+    #         random_state=42,
+    #         class_weight='balanced',  # can also try "balanced"
+    #         n_estimators=300,
+    #         learning_rate=0.05,
+    #         max_depth=-1,
+    #         num_leaves=31))
+    # ])
+
     clf = Pipeline(steps=[
         ('preprocessor', prepro),
-        ('classifier', LogisticRegression(class_weight='balanced', random_state=42))
+        ('classifier', XGBClassifier(
+            random_state=42,
+            use_label_encoder=False,
+            eval_metric="logloss",
+            scale_pos_weight=1.25,
+            n_estimators=500,
+            learning_rate=0.03,
+            max_depth=6,
+            subsample=0.8,
+            colsample_bytree=0.8
+        ))
     ])
 
-    clf = clf.fit(X_train, y_train)
+    clf.fit(X_train, y_train)
     return clf
     
 # evaluating the model on the validation set and plotting the ROC curve
 def evaluate_model(clf, X_val, y_val):
     val_acc = clf.score(X=X_val, y=y_val)
     print(f"The model's accuracy on the test set is: {val_acc*100}%")
+    print(classification_report(y_val, clf.predict(X_val)))
 
     y_probs = clf.predict_proba(X_val)[:, 1]
     fpr, tpr, thresholds = roc_curve(y_val, y_probs, pos_label=1)
@@ -60,7 +86,7 @@ def evaluate_model(clf, X_val, y_val):
     plt.ylabel("True Positive Rate")
     plt.title("ROC Curve")
     plt.legend()
-    plt.show()
+    # plt.show()
    
 
 def main():
